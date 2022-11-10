@@ -1,3 +1,4 @@
+import React from "react";
 import config from "../config.json";
 import styled from "styled-components"
 import { CSSReset } from "../source/components/CSSReset";
@@ -8,15 +9,15 @@ function homePage(){
     const estilosHomePage = { 
         //backgroundColor: "red"
     }
+    const [valorDoFiltro, setValorDoFiltro] = React.useState("Angular");
 
     return (
         <>
             <CSSReset/>
             <div style={estilosHomePage}>
-                <Menu></Menu>
-                <Thumb></Thumb>
+                <Menu valorDoFiltro={valorDoFiltro} setValorDoFiltro={setValorDoFiltro}></Menu>
                 <Header></Header>
-                <Timeline playlists={config.playlists}></Timeline>
+                <Timeline searchValue={valorDoFiltro} playlists={config.playlists}></Timeline>
             </div>
         </>
     )
@@ -24,23 +25,12 @@ function homePage(){
 
 export default homePage
 
-const StyledThumb = styled.div`
-    img{
-        width: 100%;
-        height: 200px;
-        margin-top: 55px;
-        object-fit: cover;
-        object-position: 20% 50%;
-    }
+const StyledBanner = styled.div`
+    width: 100%;
+    height: 230px;
+    background-image: url(${config.bg});
+    /* background-image: url(${({ bg }) => bg }); */
 `;
-
-function Thumb(){
-    return (
-        <StyledThumb>
-            <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=870&q=80"/>
-        </StyledThumb>
-    )
-}
 
 const StyledHeader = styled.div`
     img{
@@ -55,18 +45,15 @@ const StyledHeader = styled.div`
         width: 100%;
         padding: 16px 32px;
         gap: 16px;
+        /* margin-top: 50px; */
     }
 
-    .thumb{
-        width: 100%auto;
-        height: 80px;
-        border-radius: 0% !important;
-    }
 `;
 
 function Header(){
     return(
         <StyledHeader>
+            <StyledBanner/>
             <section className="user-info">
                 <img src={`https://github.com/${config.github}.png`}/>
                 <div>
@@ -82,7 +69,7 @@ function Header(){
     )
 }
 
-function Timeline(props){
+function Timeline({searchValue, ...props}){
     const playlistNames = Object.keys(props.playlists);
 
     //statement
@@ -94,13 +81,17 @@ function Timeline(props){
                 const videos = props.playlists[playlistName];
 
                 return (
-                    <section>
+                    <section key={playlistName}>
                         <h2>{playlistName}</h2>
                         <div>
                             {
-                                videos.map((video) => {
+                                videos.filter((video) => {
+                                    const titleNormalized = video.title.toLowerCase();
+                                    const searchValueNormalized = searchValue.toLowerCase();
+                                    return titleNormalized.includes(searchValueNormalized)
+                                }).map((video) => {
                                     return (
-                                        <a href={video.url}>
+                                        <a key={video.url} href={video.url}>
                                             <img src={video.thumb} />
                                             <span>
                                                 {video.title}
