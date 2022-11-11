@@ -1,7 +1,6 @@
 import React from "react";
 import config from "../config.json";
 import styled from "styled-components"
-import { CSSReset } from "../source/components/CSSReset";
 import Menu from "../source/components/Menu"
 import { StyledTimeline } from "../source/components/Timeline"
 
@@ -9,11 +8,10 @@ function homePage(){
     const estilosHomePage = { 
         //backgroundColor: "red"
     }
-    const [valorDoFiltro, setValorDoFiltro] = React.useState("Angular");
+    const [valorDoFiltro, setValorDoFiltro] = React.useState("");
 
     return (
         <>
-            <CSSReset/>
             <div style={estilosHomePage}>
                 <Menu valorDoFiltro={valorDoFiltro} setValorDoFiltro={setValorDoFiltro}></Menu>
                 <Header></Header>
@@ -29,6 +27,9 @@ const StyledBanner = styled.div`
     width: 100%;
     height: 230px;
     background-image: url(${config.bg});
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position-y: 45%;
     /* background-image: url(${({ bg }) => bg }); */
 `;
 
