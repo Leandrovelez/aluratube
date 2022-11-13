@@ -3,19 +3,34 @@ import config from "../config.json";
 import styled from "styled-components"
 import Menu from "../source/components/Menu"
 import { StyledTimeline } from "../source/components/Timeline"
+import { videoService } from "../source/services/VideoService";
 
 function homePage(){
-    const estilosHomePage = { 
-        //backgroundColor: "red"
-    }
+    const service = videoService();
     const [valorDoFiltro, setValorDoFiltro] = React.useState("");
+    const [playlists, setPlaylists] = React.useState({ });
 
+    React.useEffect(() => {
+        service.getAllVideos()
+            .then((dados) => {
+                const novasPlaylists = {...playlists}
+                dados.data.forEach((video) => {
+                    if(!novasPlaylists[video.playlist]){
+                        novasPlaylists[video.playlist] = [];
+                    }
+                    novasPlaylists[video.playlist].push(video);
+                })
+                setPlaylists(novasPlaylists);
+            })
+    }, []);
+
+    
     return (
         <>
-            <div style={estilosHomePage}>
+            <div>
                 <Menu valorDoFiltro={valorDoFiltro} setValorDoFiltro={setValorDoFiltro}></Menu>
                 <Header></Header>
-                <Timeline searchValue={valorDoFiltro} playlists={config.playlists}></Timeline>
+                <Timeline searchValue={valorDoFiltro} playlists={playlists}></Timeline>
             </div>
         </>
     )
@@ -74,7 +89,7 @@ function Header(){
 
 function Timeline({searchValue, ...props}){
     const playlistNames = Object.keys(props.playlists);
-
+    
     //statement
     //retorno por expressão
     //map - converte de um para outro
@@ -82,7 +97,7 @@ function Timeline({searchValue, ...props}){
         <StyledTimeline>
             {playlistNames.map((playlistName) => {
                 const videos = props.playlists[playlistName];
-
+                
                 return (
                     <section key={playlistName}>
                         <h2>{playlistName}</h2>
