@@ -9,6 +9,10 @@ export function videoService(){
         getAllVideos(){
             return supabase.from("video")
                 .select("*")
+        },
+        getAllPlaylists(){
+            return supabase.from("playlist")
+                .select("*")
         }
     }
 }

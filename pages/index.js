@@ -11,19 +11,30 @@ function homePage(){
     const [playlists, setPlaylists] = React.useState({ });
 
     React.useEffect(() => {
-        service.getAllVideos()
+        service.getAllPlaylists()
+        .then((dados) => {
+            const nomePlaylist = {};
+            dados.data.forEach((playlistNomes) => {
+                if(!nomePlaylist[playlistNomes.id]){
+                    nomePlaylist[playlistNomes.id] = [];
+                }
+                nomePlaylist[playlistNomes.id].push(playlistNomes.nome);
+            })
+            service.getAllVideos()
             .then((dados) => {
                 const novasPlaylists = {...playlists}
                 dados.data.forEach((video) => {
-                    if(!novasPlaylists[video.playlist]){
-                        novasPlaylists[video.playlist] = [];
+                    if(!novasPlaylists[nomePlaylist[video.playlist]]){
+                        novasPlaylists[nomePlaylist[video.playlist]] = [];
                     }
-                    novasPlaylists[video.playlist].push(video);
+                    novasPlaylists[nomePlaylist[video.playlist]].push(video);
                 })
                 setPlaylists(novasPlaylists);
             })
+        })
+        
     }, []);
-
+    
     
     return (
         <>
