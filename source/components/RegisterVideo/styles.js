@@ -33,6 +33,7 @@ export const StyledRegisterVideo = styled.div`
     border-radius: 2px;
     cursor: pointer;
     color: inherit;
+    margin-top: 10px;
   }
   form {
     width: 100%;
@@ -60,7 +61,7 @@ export const StyledRegisterVideo = styled.div`
     border-radius: 2px;
     border: 1px solid ${({ theme }) => theme.borderBase};
     padding: 8px 10px;
-    margin-bottom: 10px;
+    margin-top: 10px;
     outline: none;
     color: #222222;
     background-color: #f9f9f9;
@@ -71,7 +72,7 @@ export const StyledRegisterVideo = styled.div`
     border-radius: 0px;
     border: 1px solid ${({ theme }) => theme.borderBase};
     padding: 8px 10px;
-    margin-bottom: 10px;
+    margin-top: 10px;
     outline: none;
     color: #222222;
     background-color: #f9f9f9;
