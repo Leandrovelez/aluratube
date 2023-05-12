@@ -229,7 +229,10 @@ export default function RegisterVideo(){
                             {            
                                 formCadastro.values.url ? (
                                     formCadastro.values.url.match(youtubeRegex) ? (
-                                        <VideoPreview url={formCadastro.values.url}/>
+                                        <>
+                                            <h2>Preview</h2>
+                                            <VideoPreview url={formCadastro.values.url} title={formCadastro.values.title} width={290} height={175}/>
+                                        </>
                                     ) : false
                                 ) : false
                                 
